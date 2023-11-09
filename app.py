@@ -1,5 +1,7 @@
 import os
 from datetime import time
+from time import sleep
+
 import pdfplumber
 import re
 import json
@@ -65,31 +67,31 @@ def extract_data_from_pdf(pdf_path, intBusinessUnitId, unique_elements):
                 'secretKey': 'dGFudmlyQGlib3MuaW8=',
                 'allUnitsQcdataId': 0,
                 'intBusinessUnitId': intBusinessUnitId,
-                'section': 'string',
+                'section': '',
                 'dteDate': dteDate,
                 'strShift': "",
                 "machine": "string",
-                "productCriteria": "string",
-                "testFacilities": "string",
-                "partyName": "string",
-                "operatorName": "string",
-                "supervisorName": "string",
+                "productCriteria": "",
+                "testFacilities": "",
+                "partyName": "",
+                "operatorName": "",
+                "supervisorName": "",
                 'batchOrGrade': strHeatNo,
                 "testingTime": testingTime,
-                "testName": "string",
+                "testName": "",
                 "testIngridentUoM": "%",
                 "testIngrident": element,
                 "uperLimit": 0,
                 "standard": 0,
                 "lowerLimit": 0,
                 "testReport": formatted_data[element],
-                "productionUoM": "string",
+                "productionUoM": "",
                 "productionQty": 0,
                 "qcqty": 0,
                 "problemQty": 0,
-                "problemCategory": "string",
-                "qcinstructions": "string",
-                "customerComments": "string",
+                "problemCategory": "",
+                "qcinstructions": "",
+                "customerComments": "",
                 "insertDate": "2023-11-09T08:33:33.592Z",
                 "isActive": True,
                 "userIdentity": "tanvir@ibos.io"
@@ -157,4 +159,4 @@ if __name__ == '__main__':
                         print(f"POST request failed with status code {response.status_code}")
                         print(response.text)
 
-                    time.sleep(300)
+                    sleep(5)  # Use sleep function from the time module
