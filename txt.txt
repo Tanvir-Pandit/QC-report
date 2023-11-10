@@ -1,0 +1,15 @@
+PS C:\Users\ibos\Desktop\QC-report> pip install --upgrade pip
+  Using cached https://files.pythonhosted.org/packages/47/6a/453160888fab7c6a432a6e25f8afe6256d0d9f2cbd25971021da6491d899/pip-23.3.1-py3-none-any.whl
+Installing collected packages: pip
+  Found existing installation: pip 19.2.3
+    Uninstalling pip-19.2.3:
+ERROR: Could not install packages due to an EnvironmentError: [WinError 5] Access is denied: 'c:\\program files\\python38\\lib\\site-packages\\pip-19.2.3.dist-info\\entry_points.txt'  
++ --user
++   ~
+Missing expression after unary operator '--'.
+At line:1 char:3
++ --user
++   ~~~~
+Unexpected token 'user' in expression or statement.
+    + CategoryInfo          : ParserError: (:) [], ParentContainsErrorRecordException
+    + FullyQualifiedErrorId : MissingExpressionAfterOperator
