@@ -1,7 +1,6 @@
 import os
-from datetime import time
 from time import sleep
-
+from datetime import datetime
 import pdfplumber
 import re
 import json
@@ -9,10 +8,23 @@ import gdown
 import argparse
 import requests
 
+TRACKING_FILE = 'processed_files.txt'
+
+def get_processed_files():
+    if os.path.exists(TRACKING_FILE):
+        with open(TRACKING_FILE, 'r') as file:
+            return set(file.read().splitlines())
+    return set()
+
+def add_to_processed_files(filename):
+    with open(TRACKING_FILE, 'a') as file:
+        file.write(filename + '\n')
+
 def extract_data_from_pdf(pdf_path, intBusinessUnitId, unique_elements):
     dteDate_pattern = r'\d{1,2}/\d{1,2}/\d{4}'
     testTime_pattern = r'\d{1,2}:\d{2}'
     strHeatNo_pattern = r'[A-Z]{2}-\d{3}'
+    strHeatNo_pattern1 = r'[A-Z]{2}-\d{2}'
 
     output_data_list = []
 
@@ -39,12 +51,19 @@ def extract_data_from_pdf(pdf_path, intBusinessUnitId, unique_elements):
     dteDate_match = re.search(dteDate_pattern, section1_text)
     time_match = re.search(testTime_pattern, section1_text)
     strHeatNo_match = re.search(strHeatNo_pattern, section1_text)
+    strHeatNo_match1 = re.search(strHeatNo_pattern1, section1_text)
 
     dteDate = dteDate_match.group() if dteDate_match else "Not found"
     testingTime = time_match.group() if dteDate_match else "Not found"
-    strHeatNo = strHeatNo_match.group() if strHeatNo_match else "Not found"
+    strHeatNo = strHeatNo_match.group() if strHeatNo_match else (
+        strHeatNo_match1.group() if strHeatNo_match1 else "Not found")
 
-    intBusinessUnitId = intBusinessUnitId
+    if dteDate != "Not found":
+        original_date = datetime.strptime(dteDate, "%d/%m/%Y")
+        formatted_date = original_date.strftime("%Y/%m/%d")
+        dteDate = formatted_date
+
+    # intBusinessUnitId = 224
 
     section2_lines = section2_text.split('\n')
     section2_words = [line.split() for line in section2_lines]
@@ -66,11 +85,11 @@ def extract_data_from_pdf(pdf_path, intBusinessUnitId, unique_elements):
             output_data = {
                 'secretKey': 'dGFudmlyQGlib3MuaW8=',
                 'allUnitsQcdataId': 0,
-                'intBusinessUnitId': intBusinessUnitId,
+                "BusinessUnitId": 224,
                 'section': '',
-                'dteDate': dteDate,
+                'TestDate': dteDate,
                 'strShift': "",
-                "machine": "string",
+                "machine": "",
                 "productCriteria": "",
                 "testFacilities": "",
                 "partyName": "",
@@ -78,7 +97,7 @@ def extract_data_from_pdf(pdf_path, intBusinessUnitId, unique_elements):
                 "supervisorName": "",
                 'batchOrGrade': strHeatNo,
                 "testingTime": testingTime,
-                "testName": "",
+                "testName": "Chemical Composition",
                 "testIngridentUoM": "%",
                 "testIngrident": element,
                 "uperLimit": 0,
@@ -135,11 +154,13 @@ if __name__ == '__main__':
 
     folder_path = 'QC'
 
+    processed_files = get_processed_files()
+
     for root, dirs, files in os.walk(folder_path):
         for folder in dirs:
             folder_path = os.path.join(root, folder)
             for file in os.listdir(folder_path):
-                if file.endswith('.pdf'):
+                if file.endswith('.pdf') and file not in processed_files:
                     pdf_path = os.path.join(folder_path, file)
                     data = extract_data_from_pdf(pdf_path, folder, set())
 
@@ -155,8 +176,9 @@ if __name__ == '__main__':
 
                     if response.status_code == 200:
                         print("POST request successful")
+                        add_to_processed_files(file)  # Add the processed file to the tracking file
                     else:
                         print(f"POST request failed with status code {response.status_code}")
                         print(response.text)
 
-                    sleep(5)  # Use sleep function from the time module
+                    sleep(5)
