@@ -181,4 +181,4 @@ if __name__ == '__main__':
                         print(f"POST request failed with status code {response.status_code}")
                         print(response.text)
 
-                    sleep(5)
+                    sleep(10)
