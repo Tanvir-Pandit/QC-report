@@ -1,0 +1,62 @@
+OCR Results for Page 1:
+Frint Cate:  /+22323
+Name of Company
+AKIJ ISPAT LIMITED
+Address
+BAUSIA GAZARIA,MUNSHIGONJ
+KKUISPAT
+To
+MATERIALS LABORATRORY
+Sample ID
+AKIJ ISPAT BSOODWR O8MM
+Name
+Nominal
+Actual
+Actual Unit | Gauge
+Gauge length
+Elongation
+EMF
+Yield load
+diameter(d)  diameter
+Weight
+Length
+after fracture(Lu)l after fracturel
+ID
+mm
+mm
+kgm
+mm
+mm
+%
+%
+kN
+NO.1
+8.00
+8.00
+0.39
+200.000
+220.00
+10.00
+6.38
+28.96
+Name
+Yield
+Maximum
+Tensile
+Rupture load
+TSNS Ratio
+strength(Re)
+force(Fm)
+strength(Rm)
+ID
+MPa
+kN
+MPa
+kN
+NO.1
+575.64
+34.8
+692
+27.67
+1.2026
+29
